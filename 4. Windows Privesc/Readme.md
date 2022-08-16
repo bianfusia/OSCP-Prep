@@ -77,6 +77,6 @@ open new cmd
 ```
 .\winPEAS.exe
 ```
-
+```
 .\winPEAS.exe
 ```
