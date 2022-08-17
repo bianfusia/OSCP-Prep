@@ -89,7 +89,8 @@ sc query <svc name>
 ```
 - Modify an option in the servce
 ```
-sc config <svc name> <option>=<value>
+sc config <svc name> <option>= <value>
+# note that it is <option>=<space><value>
 ```
 - Start/stop a service
 ```
