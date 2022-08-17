@@ -119,6 +119,25 @@ sc config <svc name> binpath= "\"C:\Privesc\reverse.exe\""
 ```
 7. setup ```nc``` and start the service with ```net start <svc name>```
 
+### Unquoted Service Path
+- Example if ```C:\Program File\Some Dir\unquoted.exe``` is unquoted.
+- In theory windows is looking for ```C:\Program.exe``` or ```C:\Program File\Some.exe``` or ```C:\Program File\Some Dir\unquoted.exe```
+- Without quotes windows do not know if it is a program with arguments or direct path.
+1. Check winpeas under grey text ```Unquoted Path Service```
+2. Check if you have permission to start and stop the services 
+```
+.\accesschk.exe /accepteula -uwcqv <PC username> <svc name> 
+```
+3. Check for write permission for each directory path 
+```
+.\accesschk.exe /accepteula -uwdq <PC username> <dir name> 
+```
+4. Rename and put reverse shell in editable directory.
+5. setup netcat and run service
+
+### Weak Registry Permission
+
+
 ## Kernel Exploit (Last resort)
 ### Tools
 1. Windows Exploit Suggester (wes)
