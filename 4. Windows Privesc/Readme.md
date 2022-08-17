@@ -97,14 +97,14 @@ sc config <svc name> <option>= <value>
 ```
 sc start/stop <svc name>
 ```
-## 5 Types of Misconfigurations
+### 5 Types of Misconfigurations
 1. Insecure Service Properties
 2. Unquoted Service Path
 3. Weak Registry Permission
 4. Insecure Service Executables
 5. DLL Hijacking
 
-## Insecure Service Properties
+### Insecure Service Properties
 1. Check winpeas under ```interesting services - non microsoft``` and see if there is any one of it states that ```you can modify this service```
 2. You can verify it again in winpeas under ```modifiable services``` section
 3. You can further verify it with ```accesschk.exe``` and see if you have ```SERVICE_CHANGE_CONFIG``` with this command
