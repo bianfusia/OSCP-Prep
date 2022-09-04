@@ -124,7 +124,23 @@ touch ./--checkpoint-action=exec=shell.elf
 ```
 - setup nc and await cronjob.
 
+## SUID/SGID
 
+- run this to enumerate
+```
+find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2>/dev/null
+```
+- See GTFObin to see exploit
+- Can see searchsploit and exploit DB for version number exploit as well.
+
+### Uncommon SUID/SGID and shared library or non-absolute path
+- Look into the script with ```strace``` or ```ltrace``` or ```strings``` and see if they are running anything editable or exploitable.
+
+## Passwords and Keys
+
+- Look for weak password or re-use passowrd
+- see .bash_history or anything with ```_history```
+- ```cat *history | less```
 
 ## Kernel Exploit (Last Resort)
 - To enumerate Kernel version ```uname -a```
